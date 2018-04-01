@@ -7,12 +7,13 @@ import android.graphics.*
 import android.content.Context
 import android.view.*
 
-class IncompleteCircleView (ctx : Context) : View(ctx) {
-    val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    override fun onDraw(canvas : Canvas) {
+class IncompleteCircleView(ctx: Context) : View(ctx) {
+    val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    override fun onDraw(canvas: Canvas) {
 
     }
-    override fun onTouchEvent(event : MotionEvent) : Boolean {
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
 
@@ -20,9 +21,10 @@ class IncompleteCircleView (ctx : Context) : View(ctx) {
         }
         return true
     }
-    data class IncompleteCircleState (var prevScale : Float = 0f, var dir : Float = 0f, var j : Int = 0) {
-        val scales : Array<Float> = arrayOf(0f, 0f, 0f)
-        fun update(stopcb : (Float) -> Unit) {
+
+    data class IncompleteCircleState(var prevScale: Float = 0f, var dir: Float = 0f, var j: Int = 0) {
+        val scales: Array<Float> = arrayOf(0f, 0f, 0f)
+        fun update(stopcb: (Float) -> Unit) {
             scales[j] += dir * 0.1f
             if (Math.abs(scales[j] - prevScale) > 1) {
                 scales[j] = prevScale + dir
@@ -35,10 +37,36 @@ class IncompleteCircleView (ctx : Context) : View(ctx) {
                 }
             }
         }
-        fun startUpdating(startcb : () -> Unit) {
+
+        fun startUpdating(startcb: () -> Unit) {
             if (dir == 0f) {
                 dir = 1 - 2 * prevScale
                 startcb()
+            }
+        }
+    }
+
+    data class IncompleteCircleAnimator(var view: View, var animated: Boolean = false) {
+        fun animate(updatecb: () -> Unit) {
+            if (animated) {
+                updatecb()
+                try {
+                    Thread.sleep(50)
+                    view.invalidate()
+                } catch (ex: Exception) {
+
+                }
+            }
+        }
+        fun start() {
+            if (!animated) {
+                animated = true
+                view.postInvalidate()
+            }
+        }
+        fun stop() {
+            if (animated) {
+                animated = false
             }
         }
     }
