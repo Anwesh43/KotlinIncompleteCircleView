@@ -70,4 +70,31 @@ class IncompleteCircleView(ctx: Context) : View(ctx) {
             }
         }
     }
+
+    data class IncompleteCircle(var i : Int, val state : IncompleteCircleState = IncompleteCircleState()) {
+        fun draw (canvas : Canvas, paint : Paint) {
+            val w = canvas.width.toFloat()
+            val h = canvas.height.toFloat()
+            val r : Float = Math.min(w, h)/10
+            canvas.save()
+            canvas.translate(w/2, h/2)
+            canvas.rotate(180f * state.scales[1])
+            canvas.translate(w/2 * ((1 - state.scales[0]) + state.scales[2]), 0f)
+            paint.color = Color.parseColor("#E74856")
+            paint.strokeWidth = r/6
+            paint.strokeCap = Paint.Cap.ROUND
+            for(i in 0..3) {
+                canvas.save()
+                canvas.drawArc(RectF(-r, -r, r, r), -30f, 60f, false, paint)
+                canvas.restore()
+            }
+            canvas.restore()
+        }
+        fun update(stopcb : (Float) -> Unit) {
+            state.update(stopcb)
+        }
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+    }
 }
