@@ -78,16 +78,18 @@ class IncompleteCircleView(ctx: Context) : View(ctx) {
             val w = canvas.width.toFloat()
             val h = canvas.height.toFloat()
             val r : Float = Math.min(w, h)/10
+            paint.style = Paint.Style.STROKE
             canvas.save()
             canvas.translate(w/2, h/2)
-            canvas.rotate(180f * state.scales[1])
-            canvas.translate(w/2 * ((1 - state.scales[0]) + state.scales[2]), 0f)
+            canvas.rotate(90f * state.scales[1])
             paint.color = Color.parseColor("#E74856")
             paint.strokeWidth = r/6
             paint.strokeCap = Paint.Cap.ROUND
             for(i in 0..3) {
                 canvas.save()
-                canvas.drawArc(RectF(-r, -r, r, r), -30f, 60f, false, paint)
+                canvas.rotate(90f * i)
+                canvas.translate(w/2 * ((1 - state.scales[0]) + state.scales[2]), 0f)
+                canvas.drawArc(RectF(-r, -r, r, r), -30f , 60f, false, paint)
                 canvas.restore()
             }
             canvas.restore()
