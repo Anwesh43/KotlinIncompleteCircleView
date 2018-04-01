@@ -3,6 +3,7 @@ package ui.anwesome.com.incompletecircleview
 /**
  * Created by anweshmishra on 01/04/18.
  */
+import android.app.Activity
 import android.graphics.*
 import android.content.Context
 import android.view.*
@@ -114,6 +115,14 @@ class IncompleteCircleView(ctx: Context) : View(ctx) {
             incompleteCircle.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : IncompleteCircleView {
+            val view : IncompleteCircleView = IncompleteCircleView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
