@@ -97,4 +97,23 @@ class IncompleteCircleView(ctx: Context) : View(ctx) {
             state.startUpdating(startcb)
         }
     }
+
+    data class IncompleteCircleRenderer(var view : IncompleteCircleView) {
+        val incompleteCircle : IncompleteCircle = IncompleteCircle(0)
+        val animator : IncompleteCircleAnimator = IncompleteCircleAnimator(view)
+        fun render (canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            incompleteCircle.draw(canvas, paint)
+            animator.animate {
+                incompleteCircle.update {
+                    animator.stop()
+                }
+            }
+        }
+        fun handleTap() {
+            incompleteCircle.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
