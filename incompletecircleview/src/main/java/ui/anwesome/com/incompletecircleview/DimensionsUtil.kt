@@ -17,7 +17,7 @@ class DimensionsUtil {
             val displayManager : DisplayManager =  activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
             val display : Display = displayManager.getDisplay(0)
             display.getRealSize(point)
-            return point 
+            return point
         }
     }
 }

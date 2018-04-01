@@ -122,7 +122,8 @@ class IncompleteCircleView(ctx: Context) : View(ctx) {
     companion object {
         fun create(activity : Activity) : IncompleteCircleView {
             val view : IncompleteCircleView = IncompleteCircleView(activity)
-            activity.setContentView(view)
+            val size : Point = DimensionsUtil.getDimensions(activity)
+            activity.addContentView(view, ViewGroup.LayoutParams(size.x, size.x))
             return view
         }
     }
